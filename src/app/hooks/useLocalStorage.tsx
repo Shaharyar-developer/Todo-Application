@@ -16,16 +16,19 @@ const useLocalStorage = (key?: string, defaultValue: any[] = []) => {
       return defaultValue;
     }
     try {
-      const value = localStorage.getItem(key);
+      const value =
+        typeof localStorage !== "undefined" && localStorage.getItem(key);
 
       if (value) {
         return JSON.parse(value) || defaultValue;
       } else {
-        localStorage.setItem(key, JSON.stringify(defaultValue));
+        typeof localStorage !== "undefined" &&
+          localStorage.setItem(key, JSON.stringify(defaultValue));
         return defaultValue;
       }
     } catch (error) {
-      localStorage.setItem(key, JSON.stringify(defaultValue));
+      typeof localStorage !== "undefined" &&
+        localStorage.setItem(key, JSON.stringify(defaultValue));
       return defaultValue;
     }
   });
@@ -41,7 +44,8 @@ const useLocalStorage = (key?: string, defaultValue: any[] = []) => {
     } else {
       newValue = valueOrFn;
     }
-    localStorage.setItem(key, JSON.stringify(newValue));
+    typeof localStorage !== "undefined" &&
+      localStorage.setItem(key, JSON.stringify(newValue));
     setLocalStorageValue(newValue);
   };
   const removeLocalStorageValue = (name: string) => {
@@ -51,11 +55,13 @@ const useLocalStorage = (key?: string, defaultValue: any[] = []) => {
     const updatedTodos = localStorageValue.filter(
       (todo: any) => todo.name !== name
     );
-    localStorage.setItem(key, JSON.stringify(updatedTodos));
+    typeof localStorage !== "undefined" &&
+      localStorage.setItem(key, JSON.stringify(updatedTodos));
     setLocalStorageValue(updatedTodos);
   };
   const getAllLocalStorageValues = () => {
-    const item = localStorage.getItem("Todos");
+    const item =
+      typeof localStorage !== "undefined" && localStorage.getItem("Todos");
     return item ? JSON.parse(item) : [];
   };
   return [
